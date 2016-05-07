@@ -22,9 +22,11 @@ public class KMP {
             } else {
 
                 // 比较到第K个字符，说明p[0——k-1]字符串和p[j-k——j-1]字符串相等，而next[k]表示
-                // p[0——k-1]的前缀和后缀的最长共有长度，所接下来可以直接比较p[next[k]]和p[j]
+                // p[0——k-1]的前缀和后缀的最长共有长度也是当前遍历的j应该和哪个元素比较，所接下来可以直接比较p[next[k]]和p[j]
+                // j 取值len-1的时候是j++取得的，如果while的判断条件是len下标会越界
                 k = next[k];
             }
+            System.out.println(j);
         }
         System.out.println("");
     }
@@ -71,7 +73,7 @@ public class KMP {
         // TODO Auto-generated method stub
         KMP kmp = new KMP();
         String str = "agctagcbdbagtagctagca";
-        String pattern = "agctagca";
+        String pattern = "abgabgbc";
         System.out.println(kmp.kmp(str, pattern));
     }
 
