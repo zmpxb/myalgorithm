@@ -37,7 +37,6 @@ public class RemoveDuplicatesfromSortedArray {
             return 0;
         }
         int i = 0;
-
         for (int j = 1; j < n; j++) {
             if (array[i] != array[j]){
                 array[++i] = array[j];
@@ -61,6 +60,7 @@ public class RemoveDuplicatesfromSortedArray {
             return 0;
         }
         int j = 0;
+        // 变量num保证了元素可以重复出现两次
         int num = 0;
         for (int i = 1; i < array.length; i++) {
             if (array[i]==array[j]){
