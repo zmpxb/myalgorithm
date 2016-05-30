@@ -56,6 +56,7 @@ public class TowSum {
             myMap.put(nums[i],i);
         }
         for(int i = 0; i < nums.length; ++i) {
+            // 对于每一个元素找被减数的值
             int rest_val = target - nums[i];
             // containKey()函数的时间复杂度是O(1)
             if(myMap.containsKey(rest_val)) {

@@ -98,6 +98,7 @@ public class ThreeSum {
 
     public static List<List<Integer>> threeSum1(int [] nums){
         List<List<Integer>> result = new ArrayList<List<Integer>>();
+        // 先对数组进行排序
         Arrays.sort(nums);
         for (int i = 0; i < nums.length; i++) {
             int j = i+1;
@@ -126,11 +127,10 @@ public class ThreeSum {
                 } else {
                     k--;
                 }
-                // 这里之所以是i<nums.length-1 防止 nums[i+1]越界
+                // 这里之所以是i<nums.length-1 防止 nums[i+1]越界，去掉重复的以i开头的三元组。同一个相同的i可能有不同的k,j二元组满足要求
                 while (i<nums.length-1 && nums[i] == nums[i+1]){
                     i++;
                 }
-
             }
         }
         return result;
@@ -167,7 +167,6 @@ public class ThreeSum {
                 } else if (nums[i]+nums[j]+nums[k]-target< 0){
                     if (nums[i]+nums[j]+nums[k]-target>min){
                         min = nums[i]+nums[j]+nums[k]-target;
-
                     }
                     j++;
                 } else {
@@ -181,6 +180,7 @@ public class ThreeSum {
                 }
             }
         }
+        // 这里要注意min和max有可能就是MIN_VALUE或者是MAX_VALUE没有变化过
         if (min != Integer.MIN_VALUE && Math.abs(min)<max){
             return target + min;
         } else {
