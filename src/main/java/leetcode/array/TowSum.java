@@ -28,12 +28,16 @@ import java.util.HashMap;
  * @author xiaozl
  * @date: 2016/5/11
  */
+
+
+
 public class TowSum {
 
     public static void main(String[] args) {
         int [] nums =  {2, 7, 11, 15};
         int [] test = {2,1,9,4,4,56,90,3};
         System.out.println(Arrays.toString(twoSum(test,8)));
+        System.out.println(args[0]);
 //        int [] test1 = {2,2,2,2};
 //        HashMap<Integer , Integer> myMap = new HashMap<Integer, Integer>();
 //        for (int i = 0; i < test1.length; i++) {
