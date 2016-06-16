@@ -7,6 +7,8 @@ import java.util.List;
  *
  * @author xiaozl
  * @date: 2016/6/12
+/**
+ * Created by xiaozl on 2016/6/11.
  */
 public class ReverseLinkedList {
 
@@ -50,5 +52,8 @@ public class ReverseLinkedList {
             tempPrior.next = tempNext;
         }
         return tempList.next;
+
+
     }
+
 }
