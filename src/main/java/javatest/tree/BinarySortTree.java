@@ -26,18 +26,37 @@ public class BinarySortTree {
      * @param key
      * @return
      */
-    public boolean searchBst(int key){
+    public NodeBst searchBst(int key){
         NodeBst current = root;
         while (current != null){
             if (key == current.getValue()){
-                return true;
+                return current;
             } else if (key < current.getValue()){
                 current = current.getLeft();
             } else {
                 current = current.getRight();
             }
         }
-        return false;
+        return null;
+    }
+
+    public NodeBst searchFather(int key){
+        NodeBst father = null;
+        NodeBst current = root;
+        while (current != null) {
+            if (key < current.getValue()) {
+                father = current;
+                current = current.getLeft();
+            }
+            if (key > current.getValue()){
+                father = current;
+                current = current.getRight();
+            }
+            if (key == current.getValue()){
+                return father;
+            }
+        }
+        return null;
     }
 
     /**
@@ -66,6 +85,82 @@ public class BinarySortTree {
             prev.setRight(new NodeBst(key));
         }
         return true;
+    }
+
+    public NodeBst deleteNodeBst(int key){
+        if (searchBst(key) == null){
+            return null;
+        } else {
+            return deleteBST(root,null,key);
+        }
+    }
+
+    public NodeBst deleteNodeBst1(int key){
+        NodeBst delteNode = searchBst(key);
+        if (delteNode == null){
+            return null;
+        } else {
+            NodeBst f = searchFather(key);
+            return  delete(delteNode,f);
+        }
+    }
+
+    public NodeBst deleteBST(NodeBst t,NodeBst f,int key){
+        if (t == null){
+            return null;
+        } else if (key == t.getValue()){
+            delete(t,f);
+            return t;
+        } else if (key < t.getValue()){
+            return deleteBST(t.getLeft(),t,key);
+        } else {
+            return deleteBST(t.getRight(),t,key);
+        }
+    }
+
+    public NodeBst delete(NodeBst t,NodeBst f){
+        NodeBst l;
+
+        // t既没有左孩子，又没有右孩子，为叶子结点
+        if (t.getLeft() == null && t.getRight() == null){
+            if (t == root){
+
+            }
+            root = null;
+            return null;
+        } else if (t.getLeft() == null){
+            // t只有右孩子
+            t.setValue(t.getRight().getValue());
+            t.setRight(null);
+            return t;
+        } else if (t.getRight() == null){
+            // t只有左孩子
+            t.setValue(t.getLeft().getValue());
+            t.setLeft(null);
+            return t;
+        } else {
+            // t既有左孩子，又有右孩子
+            // l指向被删除结点的左子树
+            l = t.getLeft();
+
+            // 寻找l的最右孩子
+            while (l.getRight() != null) {
+                l = l.getRight();
+            }
+
+            // 把l的右子树接到左子树最右孩子的右子树上。
+            l.setRight(t.getRight());
+            // t的左子树直接作为t父结点的子树
+            if (t == f.getLeft()){
+                f.setLeft(t.getLeft());
+                return t;
+            } else {
+                f.setRight(t.getRight());
+                return t;
+            }
+
+        }
+
     }
 }
 
