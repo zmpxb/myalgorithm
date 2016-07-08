@@ -46,6 +46,10 @@ public class AVLTree <E>{
      *             /   \                   \    \
      *           BL(0)  BR(0)              BL(0) BR(0)
      *  旋转之后树的深度之差不超过1
+     *  按照左旋的算法去现代码
+     *  注意：
+     *      1.注意节点的引用的变化
+     *      2.还有各个节点之间的关系
      */
     private void rotateLeft(Entry<E> p) {
         System.out.println("绕"+p.element+"左旋");
@@ -134,15 +138,15 @@ public class AVLTree <E>{
                 return false;
             }
         } while (t!=null);
-
+        // 判断是在左边还是在右面插入
         Entry<E> child = new Entry(element,parent);
         if(cmp < 0){
             parent.left = child;
-
         }else{
             parent.right = child;
         }
-        //自下向上回溯，查找最近不平衡节点
+        //自下向上回溯，查找最近不平衡节点，parent是插入节点的父亲节点。
+        //插入了一个节点只会影响到该节点父亲和祖先节点的平衡因子。当插入节点，插入只会，其父亲节点的平衡因子如果变成0，说明树的深度并没有增加
         while(parent!=null){
             cmp = e.compareTo(parent.element);
             if(cmp < 0){    //插入节点在parent的左子树中
@@ -232,18 +236,18 @@ public class AVLTree <E>{
         boolean heightLower = true;
         Entry<E> l = t.left;
         switch (l.balance) {
-            case LH:            //左高，右旋调整,旋转后树的高度减小
+            case LH:            //左高，右旋调整,旋转后树的高度减小，输入LL型
                 t.balance = l.balance = EH;//EH=0
                 rotateRight(t);
                 break;
-            case RH:            //右高，分情况调整
+            case RH:            //右高，分情况调整 属于LR型插入
                 Entry<E> rd = l.right;
                 switch (rd.balance) {   //调整各个节点的BF
                     case LH:    //情况1
                         t.balance = RH;//RH=-1
                         l.balance = EH;//EH=0
                         break;
-                    case EH:    //情况2
+                    case EH:    //情况2 删除节点时
                         t.balance = l.balance = EH;//EH=0
                         break;
                     case RH:    //情况3
@@ -304,33 +308,35 @@ public class AVLTree <E>{
      */
     private boolean rightBalance(Entry<E> t){
         boolean heightLower = true;
-        Entry<E> r = t.right;
+        Entry<E> r = t.right; // 最小失衡节点的右孩子
         switch (r.balance) {
-            case LH:            //左高，分情况调整
-                Entry<E> ld = r.left;
+            case LH:            //左高，分情况调整 这种情况属于RL型插入的时候的调整
+                Entry<E> ld = r.left; // 最小失衡节点的右孩子的左孩子
                 switch (ld.balance) {   //调整各个节点的BF
                     case LH:    //情况1
-                        t.balance = EH;
-                        r.balance = RH;
+                        t.balance = EH; // 0
+                        r.balance = RH;// -1
                         break;
-                    case EH:    //情况2
-                        t.balance = r.balance = EH;
+                    case EH:    //情况2 针对删除节点
+                        t.balance = r.balance = EH;//0
                         break;
                     case RH:    //情况3
-                        t.balance = LH;
-                        r.balance = EH;
+                        t.balance = LH;// 1
+                        r.balance = EH;// 0
                         break;
                 }
-                ld.balance = EH;
-                rotateRight(t.right);
-                rotateLeft(t);
+                ld.balance = EH;// 0
+                rotateRight(t.right);//以失衡节点的右孩子为根右旋
+                rotateLeft(t);// 以失衡节点为根左旋
                 break;
-            case RH:            //右高，左旋调整
+            case RH:
+                //右高，左旋调整调整后最小失衡节点和它的右孩子的平衡因子为0
+                //r.balance == -1 表示的是子RR型插入
                 t.balance = r.balance = EH;
                 rotateLeft(t);
                 break;
-            case EH:       //特殊情况4
-                r.balance = LH;
+            case EH:       //特殊情况4 针对删除节点时的调整
+                r.balance = LH; // 1
                 t.balance = RH;
                 rotateLeft(t);
                 heightLower = false;
