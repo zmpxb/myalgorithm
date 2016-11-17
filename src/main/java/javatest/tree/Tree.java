@@ -10,6 +10,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by xiaozl on 2016/6/29.
+ *
+ * 前序遍历：根节点->左子树->右子树
+   中序遍历：左子树->根节点->右子树
+   后序遍历：左子树->右子树->根节点
  */
 public class Tree<T> {
 
@@ -136,6 +140,15 @@ public class Tree<T> {
     /**
      * 后续遍历(非递归)
      * 每个子树的根节点的访问都是在右子树被访问后进行访问的，用 node.getRight() == preNode进行判断
+     *
+     * 步骤：
+     * 1.后序遍历左子树，左子树进栈（但没有访问）
+     * 2.取栈顶栈顶元素，判断是否其右子树为空或者右子树已经访问过了,满足条件结点可以访问（其实是为了满足后序遍历先访问左子树和右子树）
+     *      1
+     *    /
+     *    2
+     *      \3
+     * 3.如果不满足条件继续在其右子树中进行后序遍历
      */
     public void nrPostOrderTraverse(){
         Stack<Node<T>> stack = new Stack<Node<T>>();
@@ -174,13 +187,19 @@ public class Tree<T> {
 
     public void levelTraverse(Node<T> node) {
         Queue<Node<T>> queue = new LinkedBlockingQueue<Node<T>>();
+        // 根节点进如队列
         queue.add(node);
         while (!queue.isEmpty()) {
             Node<T> temp = queue.poll();
             if (temp != null) {
                 System.out.println(temp.getValue());
-                queue.add(temp.getLeft());
-                queue.add(temp.getRight());
+                // 结点的左右子树进栈
+                if (temp.getLeft() != null){
+                    queue.add(temp.getLeft());
+                }
+                if (temp.getRight() != null) {
+                    queue.add(temp.getRight());
+                }
             }
 
         }
@@ -189,6 +208,7 @@ public class Tree<T> {
 
     /**
      * 获取树的深度
+     * 可以利用这个来求二叉树的平衡因子
      * @return
      */
     public int getDepth(){
@@ -226,6 +246,7 @@ public class Tree<T> {
                 if (len == 0){
                     break;
                 }
+                // 关键是这里利用每一层有多少节点的个数作为循环判断的条件
                 while (len > 0){
                     Node<T> t = queue.poll();
                     len--;
@@ -256,7 +277,7 @@ public class Tree<T> {
         if (node != null){
             inOrderTraverse(node.getLeft());
             if (node.getLeft() == null && node.getRight() == null){
-                leafNum++;;
+                leafNum++;
             }
             inOrderTraverse(node.getRight());
         }
@@ -277,18 +298,19 @@ public class Tree<T> {
         stack.push(root);
         while (!stack.isEmpty()){
             Node<T> node = stack.peek();
+            // 结点的左右子树都为空则设置其被访问过，然后出栈
             if (node.getLeft() == null && node.getRight() == null){
                 node.setVisited(true);
                 stack.pop();
                 continue;
             }
-
+            // 结点的左子树不为空且未被访问过，进栈
             if (node.getLeft() != null) {
                 if (!node.getLeft().isVisited()) {
                     stack.push(node.getLeft());
                 }
             }
-
+            // 结点的左子数为空或左子树被访问过，右子树不为空且未被访问，右子树入栈
             if ((node.getLeft() == null || node.getLeft().isVisited()) && node.getRight() != null) {
                 if (!node.getRight().isVisited()) {
                     stack.push(node.getRight());
@@ -309,6 +331,7 @@ public class Tree<T> {
 
     /**
      * 交换二叉树左右子树递归实现
+     * 采用的是自定向下的方法进行交换
      * @param t
      * @return
      */
@@ -320,6 +343,7 @@ public class Tree<T> {
         p = t.getLeft();
         t.setLeft(t.getRight());
         t.setRight(p);
+
         if (t.getLeft() != null){
             t.setLeft(swapTreeRe(t.getLeft()));
         }

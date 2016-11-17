@@ -1,22 +1,11 @@
-package struct.chuan;
+package datastructure.chuan;
 
-import java.io.ObjectStreamClass;
-import java.io.ObjectStreamField;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Formatter;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
+
 /**
  * MyString
  *
- * @author dujuan
+ * @author xiaozl
  * @date: 2016/5/2
  */
 public final class MyString {

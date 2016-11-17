@@ -1,4 +1,4 @@
-package struct.chuan;
+package datastructure.chuan;
 
 /**
  * ScaleConvert

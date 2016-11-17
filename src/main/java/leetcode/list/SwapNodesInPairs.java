@@ -19,6 +19,11 @@ public class SwapNodesInPairs {
         swapPairs(m);
     }
 
+    /**
+     * 链表head中每两对进行翻转
+     * @param head
+     * @return
+     */
     public static ListNode swapPairs(ListNode head) {
         if (head == null || head.next == null) {
             return head;
@@ -44,8 +49,10 @@ public class SwapNodesInPairs {
                 tmpNext = tmp.next;
             }
         }
-
         return head;
     }
+
+
+
 
 }

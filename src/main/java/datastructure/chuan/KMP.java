@@ -1,4 +1,4 @@
-package struct.chuan;
+package datastructure.chuan;
 
 /**
  * Created by xiaozl on 2016/5/3.
